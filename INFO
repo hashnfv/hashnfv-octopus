@@ -7,6 +7,8 @@ Project Lead: ulrich.kleber@huawei.com (temporary)
 Jira Project Name: Continuous Integration Project
 Jira Project Prefix: OCTO
 Mailing list tag [octopus]
+IRC: Server:freenode.net Channel:#opnfv-octopus
+Repository: octopus
 
 Committers:
 dradez@redhat.com
@@ -19,6 +21,16 @@ zhangyu11@huawei.com
 cm-r@hp.com
 sudha.kumari@hp.com
 ulrich.kleber@huawei.com
+fatih.degirmenci@ericsson.com
+Iben.Rodriguez@spirent.com
+zhaoxinyu@huawei.com:
 
 Link to TSC approval of the project: http://meetbot.opnfv.org/meetings/opnfv-meeting/
 Link(s) to approval of additional submitters:
+
+ulrich.kleber@huawei.com: 
+https://wiki.opnfv.org/wiki/tsc#tsc_meeting_february_10_2015 + email vote
+
+fatih.degirmenci@ericsson.com, Iben.Rodriguez@spirent.com, zhaoxinyu@huawei.com:
+http://ircbot.wl.linuxfoundation.org/meetings/opnfv-meeting/2015/opnfv-meeting.2015-03-30-14.00.html 
+
