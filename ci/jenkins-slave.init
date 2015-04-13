@@ -1,0 +1,111 @@
+#!/bin/bash
+##############################################################################
+# Copyright (c) 2015 Huawei Technologies Co.,Ltd.
+# meimei@huawei.com
+# All rights reserved. This program and the accompanying materials
+# are made available under the terms of the Apache License, Version 2.0
+# which accompanies this distribution, and is available at
+# http://www.apache.org/licenses/LICENSE-2.0#
+##############################################################################
+set -o errexit
+set -o nounset
+set -o pipefail
+
+SLAVE_CONF="/etc/default/jenkins-slave"
+if [ -f ${SLAVE_CONF} ]; then
+    . ${SLAVE_CONF}
+else
+    echo "Fatal : Configuration file dosenot exist, details please refer to README."
+    exit
+fi
+
+if [ -z "${SLAVENAME}" ] || [ -z "${TOKEN}" ]
+then
+    echo "Fatal : Lack of slavename and token"
+    exit
+fi
+
+JENKINS_HOME="/home/jenkins"
+PID_FILE="${JENKINS_HOME}/slave.pid"
+SLAVE_JAR="${JENKINS_HOME}/slave.jar"
+SLAVE_JNLP="-jnlpUrl https://build.opnfv.org/ci/computer/${SLAVENAME}/slave-agent.jnlp"
+USER="jenkins"
+SLAVE_LOG="${JENKINS_HOME}/slave.log"
+JAVA_BIN="/usr/bin/java"
+
+usage ()
+{
+cat<<EOF
+Usage: jenkins-slave {start|stop|restart}
+EOF
+}
+
+start()
+{
+    echo "Starting jenkins slave(${SLAVENAME})"
+    if ! start-stop-daemon --start -m -b -c ${USER} -p ${PID_FILE} \
+        --startas /bin/bash -- -c \
+        "exec ${JAVA_BIN}  -jar ${SLAVE_JAR} ${SLAVE_JNLP} -secret ${TOKEN} >>${SLAVE_LOG} 2>&1"
+    then
+        echo "Start jenkins slave failed!"
+    else
+        echo "DONE."
+    fi
+}
+
+stop()
+{
+    echo "Stopping jenkins slave(${SLAVENAME})"
+    if ! start-stop-daemon --stop -p ${PID_FILE}
+    then
+        echo "Stop jenkins slave failed!"
+    else
+        echo "DONE."
+    fi
+    rm -f ${PID_FILE}
+}
+
+status()
+{
+    set +e
+    pid=`ps -ef | grep "${SLAVE_JAR}" | grep -v 'grep' |  awk '{print $2}'`
+    set -e
+    if [ -z $pid ]
+    then
+        echo "jenkins slave is not running!"
+    else
+        echo "jenkins slave is running, pid is $pid"  
+    fi
+}
+
+if [ $# -gt 0 ]
+then
+    OPTION=$1
+else
+    echo "None valid argument!"
+    usage
+    exit 1
+fi
+
+case "$OPTION" in
+    start)
+        start
+    ;;
+    stop)
+        stop
+    ;;
+    restart)
+        stop
+        sleep 2
+        start
+    ;;
+    status)
+        status
+    ;;
+    *)
+        echo "$OPTION is not a valid argument!"
+    usage
+        exit 1
+    ;;
+esac
+
