@@ -1,80 +1,174 @@
-TL;DR
------
+===========================
+ OPNFV Artifact Repository
+===========================
 
-Don't use git to store binary files that are built from source such as PDF files or Virtual Machine Images.
+Artifact Repository
+===================
 
 What is Artifact Repository
 ---------------------------
 
-An artifact repository is akin to what Subversion is to source code, i.e. it is a way of versioning code binary artifacts. In the Java world these artifacts could be jars, wars, ears, fully fledged applications, libraries or a collections of libraries that are packaged. (Read the rest from `the reference <http://blogs.collab.net/subversion/why-you-should-be-using-an-artifact-repository-part-1>`_.)
+An Artifact Repository is akin to what Subversion is to source code, i.e. it is a way of versioning artifacts produced by build systems, CI, and so on. [1]
 
-What will be used as Artifact Repository for OPNFV
---------------------------------------------------
+Why Artifact Repository is Needed
+---------------------------------
 
-It has been decided to use Google Storage as OPNFV Artifact Repository.
-
-This is due to not having enough storage in OPNFV infrastructure and installing/managing a robust Artifact Repository is not straightforward.
-
-Alternatives
-------------
-
-There are number of different alternatives that can serve as Artifact Repository Manager (ARM).
-
-Well known ones are 
-
-* `JFrog Artifactory <http://www.jfrog.com/open-source/>`_
-* `Sonatype Nexus <http://www.sonatype.org/nexus/>`_
-* `Apache Archiva <http://archiva.apache.org/index.cgi>`_
-* `Swift <https://wiki.openstack.org/wiki/Swift>`_
-* `Google Cloud Storage <https://cloud.google.com/storage/>`_
-
-What other OSS Projects Use
----------------------------
-
-Different OSS Projects use different ARMs as listed below.
-
-* OpenDaylight: Sonatype Nexus. (provided by Linux Foundation.) `https://wiki.opendaylight.org/view/Infrastructure:Nexus <https://wiki.opendaylight.org/view/Infrastructure:Nexus>`_.
-* OpenStack: Uses tarball site. `http://tarballs.openstack.org/ <http://tarballs.openstack.org/>`_.
-* Apache: Sonatype Nexus. `https://repository.apache.org/ <https://repository.apache.org/>`_.
-
-Use of ARM in CI
-----------------
-
-Binaries/packages that are produced by CI can be deployed/uploaded to Artifact Repository making it possible to reuse artifacts during later stages of CI. They can be consumed by individual developers/organizations as well.
-
-Whatever is produced by CI can always be tracked by doing this when needed.
-
-Uploading artifacts using REST
-------------------------------
-
-Both Artifactory and Nexus provide REST APIs to upload/manipulate artifacts. Below are the links to some examples.
-
-* `How can I programatically upload an artifact into Nexus? <https://support.sonatype.com/entries/22189106-How-can-I-programatically-upload-an-artifact-into-Nexus->`_
-* `Deploy Artifact to Artifactory <http://www.jfrog.com/confluence/display/RTF/Artifactory+REST+API#ArtifactoryRESTAPI-DeployArtifact>`_
-
-Uploading artifacts using Jenkins Plugins
------------------------------------------
-
-Jenkins has number of plugins that offer integration of different ARMs. One of the examples is `Artifactory Plugin <https://wiki.jenkins-ci.org/display/JENKINS/Artifactory+Plugin>`_.
-
-Longer version
---------------
-
-This is a summary of various email discussions on the topic of where to store large binary image files. Typical examples include videos, virtual machine images, software installers, ISOs for Operating Systems.
-
-Since many developers check their source code into the GIT repository it may seem natural to just place the files you've built into the repo too. This can work okay for a single developer working on a project over the weekends but with a team working on many components that need to be tested and integrated this won't scale.
+Since many developers check their source code into the GIT repository it may seem natural to just place the files you've built into the repo too. This can work okay for a single developer working on a project over the weekends but with a team working on many components that need to be tested and integrated, this won't scale.
 
 The way git works, no revision of any file is ever lost. So if you ever check in a big file, the repository will always contain it, and a git clone will be that much slower for every clone from that point onward.
 
-The golden rule of revision control systems applies: check in your build scripts, not your build products.
+The golden rule of revision control systems applies: *check in your build scripts, not your build products*.
 
-Unfortunately, it only takes one person to start doing this and we end up with huge repositories. Please don't do this. It will make your computers sad. Thankfully, gerrit and code review systems are a massive disincentive to doing this.
+Unfortunately, it only takes one person to start doing this and we end up with huge repositories. Please don't do this. It will make your computers sad. Thankfully, Gerrit and code review systems are a massive disincentive to doing this.
 
-You definitely need to avoid storing binary images in git. This is what artifact repositories are for, like `Nexus or Artifactory <https://twiki.auscope.org/wiki/Grid/NexusVsArtifactory>`_
+You definitely need to avoid storing binary images in git. This is what artifact repositories are for. [2]
 
-A “centralized image repository” is needed that can store multiple versions of various virtual machines and have something like /latest pointing to the newest uploaded image. It could be a simple nginx server that stores the output images from any jenkins job if it's successful, for instance. Any “client” would be able to fetch the latest “autorelease” using `https://server/image/latest <https://server/image/latest>`_ to get the latest image or `https://server/stcv/1.1 <https://server/stcv/1.1>`_ and so on for any older image.
+A “centralized image repository” is needed that can store multiple versions of various virtual machines and have something like /latest pointing to the newest uploaded image. It could be a simple nginx server that stores the output images from any jenkins job if it's successful, for instance.
 
-For the specific project “vswitch performance characterization”, we have a directory as place holder to store the VM images. The VM images are not going to be in git repo. We use the same working git repository inside VM to run initial setup, and save the VM image in the host.
+OPNFV Artifact Repository
+=========================
 
-TAG: GIT repository file download section
+What is used as Artifact Repository for OPNFV
+---------------------------------------------
 
+Setting up, hosting, and operating an artifact repository on OPNFV Infrastructure in Linux Foundation (LF) environment requires too much storage space. It is also not a straightforward undertaking to have robust Artifact Repository and provide 24/7 support.
+
+OPNFV Project decided to use **Google Cloud Storage** as OPNFV Artifact Repository due to reasons summarized above. [3]
+
+Usage of Artifact Repository in OPNFV CI
+----------------------------------------
+
+Binaries/packages that are produced by OPNFV Continuous Integration (CI) are deployed/uploaded to Artifact Repository making it possible to reuse artifacts during later stages of OPNFV CI. Stored artifacts can be consumed by individual developers/organizations as well.
+
+In OPNFV, we generally produce PDF, ISO and store them on OPNFV Artifact Repository.
+
+OPNFV Artifact Repository Web Interface
+----------------------------------------
+
+OPNFV Artifact Repository is accessible via link http://artifacts.opnfv.org/.
+
+A proxy has been set up by LF for the community members located in countries with access restrictions to Google http://build.opnfv.org/artifacts/.
+
+Access Rights to OPNFV Artifact Repository
+==========================================
+
+As summarized in previous sections, OPNFV uses Google Cloud Storage as Artifact Repository. By default, everyone has read access to it and artifacts can be fetched/downloaded using browser, a curl-like command line HTTP client, or gsutil.
+
+Write access to Artifact Repository is given per request basis and all the requests must go through `LF Helpdesk <opnfv-helpdesk@rt.linuxfoundation.org>`_ with an explanation regarding the purpose of write access. Once you are given write access, you can read corresponding section to store artifacts on OPNFV Artifact Repository.
+
+How to Use OPNFV Artifact Repository
+====================================
+
+There are 3 basic scenarios to use OPNFV Artifact repository.
+
+* browsing artifacts
+* downloading artifacts
+* uploading artifacts
+
+Please see corresponding sections regarding how to do these.
+
+How to Browse Artifacts Stored on OPNFV Artifact Repository
+-----------------------------------------------------------
+
+You can browse stored artifacts using
+
+* **Web Browser**: By navigating to the address `OPNFV Artifact Storage <http://artifacts.opnfv.org/>`_.
+
+* **Command Line HTTP-client**
+    ``curl -o <output_filename> http://artifacts.opnfv.org``
+
+    Example:
+
+    ``curl -o opnfv-artifact-repo.html http://artifacts.opnfv.org``
+
+* **Google Storage Util (gsutil)**
+    ``gsutil ls gs://artifacts.opnfv.org/<path_to_bucket>``
+
+    Example:
+
+    ``gsutil ls gs://artifacts.opnfv.org/octopus``
+
+How to Download Artifacts from OPNFV Artifact Repository
+--------------------------------------------------------
+
+You can download stored artifacts using
+
+* **Web Browser**: By navigating to the address `OPNFV Artifact Storage <http://artifacts.opnfv.org/>`_ and clicking the link of the artifact you want to download.
+
+* **Command Line HTTP-client**
+    ``curl -o <output_filename> http://artifacts.opnfv.org/<path/to/artifact>``
+
+    Example:
+
+    ``curl -o main.pdf http://artifacts.opnfv.org/octopus/docs/release/main.pdf``
+
+* **Google Storage Util (gsutil)**
+    ``gsutil cp gs://artifacts.opnfv.org/<path/to/artifact> <output_filename>``
+
+    Example:
+
+    ``gsutil cp gs://artifacts.opnfv.org/octopus/docs/release/main.pdf main.pdf``
+
+How to Upload Artifacts to OPNFV Artifact Repository
+----------------------------------------------------
+
+As explained in previous sections, you need to get write access for OPNFV Artifact Repository in order to upload artifacts.
+
+Apart from write access, you also need to have Google account and have the Google Cloud Storage utility, **gsutil**, installed on your computer.
+
+Install and Configure gsutil
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Please follow steps listed below.
+
+1. Install gsutil
+
+    Please follow steps listed on `this link <https://cloud.google.com/storage/docs/gsutil_install>`_ to install gsutil to your computer.
+
+2. Configure gsutil
+
+    Issue below command and follow the instructions. You will be asked for the project-id. The project-id is **linux-foundation-collab**.
+
+    ``gsutil config``
+
+3. Request write access for OPNFV Artifact Repository
+
+    Send an email to `LF Helpdesk <opnfv-helpdesk@rt.linuxfoundation.org>`_ and list the reasons for the request. Do not forget to include gmail mail address.
+
+Upload Artifacts
+~~~~~~~~~~~~~~~~
+
+Once you installed and configured gsutil and got write access from LF Helpdesk, you should be able to upload artifacts to OPNFV Artifact Repository.
+
+The command to upload artifacts is
+
+    ``gsutil cp <file_to_upload> gs://artifacts.opnfv.org/<path/to/bucket>``
+
+    Example:
+
+    ``gsutil cp README gs://artifacts.opnfv.org/octopus``
+
+Once the upload operation is completed, you can do the listing and check to see if the artifact is where it is expected to be.
+
+    ``gsutil ls gs://artifacts.opnfv.org/<path/to/bucket>``
+
+    Example:
+
+    ``gsutil ls gs://artifacts.opnfv.org/octopus``
+
+Getting Help
+============
+
+Send an email to `LF Helpdesk <opnfv-helpdesk@rt.linuxfoundation.org>`_ or join the channel **#opnfv-octopus** on IRC.
+
+References
+----------
+1. `Why you should be using an Artifact Repository <http://blogs.collab.net/subversion/why-you-should-be-using-an-artifact-repository-part-1>`_
+2. `Regarding VM image and Git repo <http://lists.opnfv.org/pipermail/opnfv-tech-discuss/2015-January/000591.html>`_
+3. `Google Cloud Storage <https://cloud.google.com/storage/>`_
+
+**Documentation tracking**
+
+Revision: _sha1_
+
+Build date:  _date_
