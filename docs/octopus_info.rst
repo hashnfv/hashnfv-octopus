@@ -23,3 +23,8 @@ The CI project provides the starting point for all OPNFV development activities.
 * **Execute the continuous automated builds and basic verification**
 
 
+**Documentation tracking**
+
+Revision: _sha1_
+
+Build date:  _date_
