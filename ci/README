@@ -9,16 +9,17 @@
 Before use this script please make sure things below you have done:
 1.Install JDK on server
 2.Create local user on server: jenkins
-3.Create the local workspace configured in jenkins
-3.Download slave.jar and put it into $HOME directory of jenkins user
-4.Your slave has been configured in OPNFV Jenkins
-5.Obtain slave's token from Linux Foundation Helpdesk
+3.Your slave has been configured in OPNFV Jenkins master
+4.Create slave's local workspace that has been configured in jenkins master
+5.Download slave.jar and put it into the folder of /home/jenkins/
+6.Obtain slave's token from Linux Foundation Helpdesk
 Consult wiki : https://wiki.opnfv.org/wiki/jenkins#how_to_connect_servers_from_labs_to_opnfv_jenkins
 
 Follow steps below to launch your slave to OPNFV Jenkins:
 1. cp jenkins-slave.init /etc/init.d/jenkins-slave
 2. chmod +x /etc/init.d/jenkins-slave
-3. define $SLAVENAME&$TOKEN in config file(jenkins-slave)
+3. Define $SLAVENAME&$TOKEN in config file(jenkins-slave)
 4. cp jenkins-slave /etc/default/jenkins-slave
 5. service jenkins-slave start
-Finally, run "service jenkins-slave status" command to check the process is running, see the log(/home/jenkins/slave.log) to confirm the connect to  OPNFV Jenkins.
+
+Finally, run "service jenkins-slave status" command to check the process is running, see the log(/home/jenkins/jenkins-slave/slave.log) to confirm the connection to OPNFV Jenkins.
