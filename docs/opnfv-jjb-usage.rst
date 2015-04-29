@@ -1,4 +1,3 @@
-===========================================
 How to write and use JJB?
 ============================================
 
@@ -108,14 +107,14 @@ means to restrict this job to run in Jenkins master node. Next, several importan
 
 Generally, the modules used in a job template is sequenced as
 
-1.parameters, properties
-2.scm
-3.triggers
-4.wrappers
-5.prebuilders
-6.builders
-7.postbuilders
-8.publishers, reporters, notifications
+1. parameters, properties
+2. scm
+3. triggers
+4. wrappers
+5. prebuilders
+6. builders
+7. postbuilders
+8. publishers, reporters, notifications
 
 Working with OPNFV Jenkins Jobs
 -------------------------------
@@ -135,22 +134,17 @@ make changes::
  remote:   https://gerrit.opnfv.org/gerrit/51
  remote:
  To ssh://agardner@gerrit.opnfv.org:29418/releng.git
-  * [new branch]      HEAD -> refs/publish/master
+  "* [new branch]      HEAD -> refs/publish/master
 
 Follow the link to gerrit https://gerrit.opnfv.org/gerrit/51 in a few moments the verify job will have completed and you will see Verified +1 jenkins-ci in the gerrit ui.
 
-If the changes pass the verify job https://build.opnfv.org/ci/view/builder/job/builder-verify-jjb/ The patch can be submitited by a committer.
+If the changes pass the verify job https://build.opnfv.org/ci/view/builder/job/builder-verify-jjb/ The patch can be submitted by a committer.
 
-Job Types
+The verify and merge jobs are retriggerable in Gerrit by simply leaving a comment with one of the keywords listed below. This is useful in case you need to re-run one of those jobs in case if build issues or something changed with the environment.
 
-* Verify Job
+* Verify Job: Trigger: **recheck** or **reverify**
 
- * Trigger: **recheck** or **reverify**
-
-* Merge Job
- * Trigger: **remerge**
-
-The verify and merge jobs are retriggerable in Gerrit by simply leaving a comment with one of the keywords listed above. This is useful in case you need to re-run one of those jobs in case if build issues or something changed with the environment.
+* Merge Job: Trigger: **remerge**
 
 You can add below persons as reviewers to your patch in order to get it reviewed and submitted.
 
