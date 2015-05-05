@@ -1,14 +1,60 @@
-Jenkins
+:Authors: Fatih Degirmenci (Ericsson AB)
+:Version: 0.1.0
+
+================================
+Connecting Labs to OPNFV Jenkins
+================================
+
+Abstract
+========
+
+This document describes how to connect resources (servers) located in Linux Foundation (LF) lab and labs provided by the OPNFV Community to OPNFV Jenkins.
+
+License
 =======
+Connecting Labs to OPNFV Jenkins (c) by Fatih Degirmenci (Ericsson AB)
+
+Connecting Labs to OPNFV Jenkins document is licensed under a Creative Commons Attribution 4.0 International License. You should have received a copy of the license along with this. If not, see <http://creativecommons.org/licenses/by/4.0/>.
+
+**Contents**
+
+1   Version history
+
+2   Jenkins
+
+3   Jenkins Slaves
+
+4   Connecting Slaves to OPNFV Jenkins
+
+5   References
+
+
+1   Version History
+===================
+
++--------------------+--------------------+--------------------+--------------------+
+| **Date**           | **Ver.**           | **Author**         | **Comment**        |
+|                    |                    |                    |                    |
++--------------------+--------------------+--------------------+--------------------+
+| 2015-05-05         | 0.1.0              | Fatih Degirmenci   | First draft        |
+|                    |                    |                    |                    |
++--------------------+--------------------+--------------------+--------------------+
+
+2   Jenkins
+===========
 
 Jenkins is an extensible open source Continuous Integration (CI) server. [1]
 
 Linux Foundation (LF) hosts and operates `OPNFV Jenkins <https://build.opnfv.org/ci/>`_.
 
-Jenkins Slaves
-==============
+3   Jenkins Slaves
+==================
 
-**Slaves** are computers that are set up to build projects for a **Jenkins Master**. Jenkins runs a separate program called "**slave agent**" on slaves. When slaves are registered to a master, the master starts distributing loads to slaves. Term **Node** is used to refer to all machines that are part of Jenkins grid, slaves and master. [2]
+**Slaves** are computers that are set up to build projects for a **Jenkins Master**.  [2]
+
+Jenkins runs a separate program called "**slave agent**" on slaves. When slaves are registered to a master, the master starts distributing loads to slaves.  [2]
+
+Term **Node** is used to refer to all machines that are part of Jenkins grid, slaves and master. [2]
 
 Two types of slaves are currently connected to OPNFV Jenkins and handling different tasks depending on the purpose of connecting the slave.
 
@@ -16,22 +62,22 @@ Two types of slaves are currently connected to OPNFV Jenkins and handling differ
 * Slaves hosted in `Community Test Labs <https://wiki.opnfv.org/pharos#community_test_labs>`_
 
 The slaves connected to OPNFV Jenkins can be seen using this link: https://build.opnfv.org/ci/computer/
-The ones that don't have red cross next to computer icon are fully functional.
+Slaves without red cross next to computer icon are fully functional.
 
-How to Connect Slaves to OPNFV Jenkins
+4   Connecting Slaves to OPNFV Jenkins
 ======================================
 
 The method that is normally used for connecting slaves to Jenkins requires direct SSH access to servers. [3] This is the method that is used for connecting slaves hosted in LF Lab.
 
 Connecting slaves using direct SSH access can become a challenge given that OPNFV Project has number of different labs provided by community as mentioned in previous section. All these labs have different security requirements which can increase the effort and the time needed for connecting slaves to Jenkins. In order to reduce the effort and the time needed for connecting slaves and streamline the process, it has been decided to connect slaves using `Java Network Launch Protocol (JNLP) <https://docs.oracle.com/javase/tutorial/deployment/deploymentInDepth/jnlp.html>`_.
 
-Connecting Slaves from LF Lab to OPNFV Jenkins
-----------------------------------------------
+4.1 Connecting Slaves from LF Lab to OPNFV Jenkins
+--------------------------------------------------
 
 Slaves hosted in LF Lab are handled by LF. All the requests and questions regarding these slaves should be submitted to `OPNFV LF Helpdesk <opnfv-helpdesk@rt.linuxfoundation.org>`_.
 
-Connecting Slaves from Community Labs to OPNFV Jenkins
-------------------------------------------------------
+4.2 Connecting Slaves from Community Labs to OPNFV Jenkins
+----------------------------------------------------------
 
 As noted in corresponding section, slaves from Community Labs are connected using JNLP. Via JNLP, slaves open connection towards Jenkins Master instead of Jenkins Master accessing to them directly.
 
@@ -44,19 +90,18 @@ Please follow below steps to connect a slave to OPNFV Jenkins.
 3. Create a local user on server you want to connect to OPNFV Jenkins. (named **jenkins** for example)
 4. Download slave.jar using https://build.opnfv.org/ci/jnlpJars/slave.jar and place it to somewhere so jenkins user created in previous step can access.
 5. Create a directory /home/jenkins/opnfv_slave_root.
-6. Ping/contact LF(Aric) via chat as getting the server connected requires Aric's help.
-7. Ask Aric to create a slave on OPNFV Jenkins. The slave should use JNLP as method.
-8. Provide needed information to Aric such as the IP of the server, name of the slave, and slave root. (/home/jenkins/opnfv_slave_root for example)
-9. Aric should provide you the key/token you need to use.
-10. Try to see if you can establish connection towards OPNFV Jenkins by using below command.
+6. Contact LF via chat as getting the server connected requires help from LF. (aricg on freenode)
+7. Provide needed information to LF such as the IP of the server, name of the slave, and slave root. (/home/jenkins/opnfv_slave_root for example)
+8. LF will provide you the key/token you need to use.
+9. Try to see if you can establish connection towards OPNFV Jenkins by using below command.
 
 ``java -jar slave.jar -jnlpUrl https://build.opnfv.org/ci/computer/<slave_name>/slave-agent.jnlp -secret <token>``
 
-11. Navigate to OPNFV Jenkins and look for your slave. It should have some executors in “Idle” state if the connection is successful.
-12. Once you reach this step, you have the server connection to OPNFV Jenkins completed. You can script the command you used above so the connection between slave and Jenkins can be kept open.
+10. Navigate to OPNFV Jenkins and look for your slave. It should have some executors in “Idle” state if the connection is successful.
+11. Once you reach this step, you have the server connection to OPNFV Jenkins completed. You can script the command you used above so the connection between slave and Jenkins can be kept open.
 
-References
-==========
+5   References
+==============
 * `What is Jenkins <https://wiki.jenkins-ci.org/display/JENKINS/Meet+Jenkins>`_
 * `Jenkins Terminology <https://wiki.jenkins-ci.org/display/JENKINS/Terminology>`_
 * `Jenkins SSH Slaves Plugin <https://wiki.jenkins-ci.org/display/JENKINS/SSH+Slaves+plugin>`_
