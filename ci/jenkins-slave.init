@@ -12,26 +12,43 @@ set -o nounset
 set -o pipefail
 
 SLAVE_CONF="/etc/default/jenkins-slave"
-if [ -f ${SLAVE_CONF} ]; then
+
+if [ -f ${SLAVE_CONF} ]
+then
     . ${SLAVE_CONF}
 else
-    echo "Fatal : Configuration file dosenot exist, details please refer to README."
+    echo "Error : Configuration file ($SLAVE_CONF) does not exist, details please refer to README."
     exit
 fi
 
 if [ -z "${SLAVENAME}" ] || [ -z "${TOKEN}" ]
 then
-    echo "Fatal : Lack of slavename and token"
+    echo "Error : Please define SLAVENAME and TOKEN values in the Configuration file ($SLAVE_CONF),  details please refer to README."
     exit
 fi
 
-JENKINS_HOME="/home/jenkins"
-PID_FILE="${JENKINS_HOME}/slave.pid"
-SLAVE_JAR="${JENKINS_HOME}/slave.jar"
 SLAVE_JNLP="-jnlpUrl https://build.opnfv.org/ci/computer/${SLAVENAME}/slave-agent.jnlp"
+JENKINS_HOME="/home/jenkins"
+SLAVE_JAR="${JENKINS_HOME}/slave.jar"
+JENKINS_SLAVE_ROOTDIR="${JENKINS_HOME}/jenkins-slave"
+PID_FILE="${JENKINS_SLAVE_ROOTDIR}/slave.pid"
+SLAVE_LOG="${JENKINS_SLAVE_ROOTDIR}/slave.log"
 USER="jenkins"
-SLAVE_LOG="${JENKINS_HOME}/slave.log"
+GROUP="jenkins"
 JAVA_BIN="/usr/bin/java"
+
+if [ ! -f ${SLAVE_JAR} ]
+then
+    echo "Error : ${SLAVE_JAR} dosenot exist, details please refer to README."
+    exit
+fi
+
+[ -e ${JENKINS_SLAVE_ROOTDIR} ] || { mkdir ${JENKINS_SLAVE_ROOTDIR}; chown ${USER}:${GROUP} ${JENKINS_SLAVE_ROOTDIR};};
+if [ ! -d ${JENKINS_SLAVE_ROOTDIR} ]
+then
+    echo "Error : ${JENKINS_SLAVE_ROOTDIR} can not be created! Maybe there is a file with the same name of 'jenkins-slave'."
+    exit
+fi
 
 usage ()
 {
@@ -74,7 +91,7 @@ status()
     then
         echo "jenkins slave is not running!"
     else
-        echo "jenkins slave is running, pid is $pid"  
+        echo "jenkins slave is running, pid is $pid"
     fi
 }
 
@@ -82,7 +99,7 @@ if [ $# -gt 0 ]
 then
     OPTION=$1
 else
-    echo "None valid argument!"
+    echo "Please input your argument!"
     usage
     exit 1
 fi
@@ -103,8 +120,8 @@ case "$OPTION" in
         status
     ;;
     *)
-        echo "$OPTION is not a valid argument!"
-    usage
+        echo "Error: $OPTION is not a valid argument"
+        usage
         exit 1
     ;;
 esac
