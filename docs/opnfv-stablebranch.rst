@@ -97,6 +97,7 @@ The best way to get the patch merged in timely manner is to send it backported b
 
 If the patch you're proposing will not cherry-pick cleanly, you can help by resolving the conflicts yourself and proposing the resulting patch. Please keep Conflicts lines in the commit message to help reviewers! You can use git-review to propose a change to the stable branch with::
 
+   $> git log (find out the commit id of the patch that you want to backport from "git log" output)
    $> git checkout stable/arno 
    $> git cherry-pick -x $master_commit_d 
    $> git review stable/arno
@@ -133,9 +134,22 @@ will be introduced when we see the need.
 CI Pipeline
 ~~~~~~~~~~~
 
-Octopus team will setup separate pipeline for merge-, build-, verify-jobs.
-
 For Arno release the jobs will be run once per day per installer (Fuel and Foreman) on stable/arno branch. Since this is in addition to the jobs for master branch and jobs have long run time, this might need re-evaluation as we go on.
+
+The artifacts arno/stable jobs produced are stored in the new directoies on artifacts.opnfv.org.
+
+The artifacts produced by daily jobs would be stored
+  For stable/arno, the storage locations will be <project_name>/arno/<artifact_name>.iso
+The docs produced by daily and merge jobs would be stored
+  For stable/arno, the storage locations will be <project_name>/arno/docs/<document_name>
+
+No changes in overall functionality in merge and verify jobs: they will continue doing builds only ::
+
+    genesis-fuel-verify-master, genesis-fuel-verify-stable-arno,
+    genesis-fuel-merge-master, genesis-fuel-merge-stable-arno,
+    genesis-foreman-verify-master, genesis-foreman-verify-stable-arno,
+    genesis-foreman-merge-master, genesis-foreman-merge-stable-arno
+
 
 Team organization
 -----------------
