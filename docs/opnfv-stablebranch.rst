@@ -32,17 +32,18 @@ Only a limited class of changes are appropriate for inclusion on the stable bran
 
 A number of factors must be weighed when considering a change:
 
-- **The risk of regression** - even the tiniest changes carry some risk of 
+- **The risk of regression** - even the tiniest changes carry some risk of
   breaking something and we really want to avoid regressions on the stable branch
-- **The user visible benefit** - are we fixing something that users might actually 
+- **The user visible benefit** - are we fixing something that users might actually
   notice and, if so, how important is it?
 - **How self-contained the fix is** - if it fixes a significant issue but also
   refactors a lot of code, it's probably worth thinking about what a less risky
-  fix might look like 
+  fix might look like
 - Whether the fix is **already on master - a change must be a **backport** of a change
   already merged onto master, unless the change simply does not make sense on master
   (e.g. because of a change of architecture).
 - If there is a suitable **work-around** for a bug, normally there won't be a fix on stable.
+- Since OPNFV is using several upstream projects, typically fixes in the upstream projects will apply as fixes for OPNFV. Therefore complete **maintenance revisions of the upstream projects** (i.e. minor versions) can be used as suitable backports for OPNFV  maintenance releases.
 - Since OPNFV is a midstream integration effort, also test cases might be suitable backports
   in case they are related to critical bugs found in stable.
 
@@ -59,7 +60,7 @@ Some types of changes are completely forbidden:
 - Changes to the notification definitions
 - DB schema changes
 - Incompatible config file changes
-- Changes including a version upgrade of an upstream component of OPNFV 
+- Changes including a version upgrade of an upstream component of OPNFV
   (since this will typically violate the above points)
 
 Support phases
@@ -98,8 +99,8 @@ The best way to get the patch merged in timely manner is to send it backported b
 If the patch you're proposing will not cherry-pick cleanly, you can help by resolving the conflicts yourself and proposing the resulting patch. Please keep Conflicts lines in the commit message to help reviewers! You can use git-review to propose a change to the stable branch with::
 
    $> git log (find out the commit id of the patch that you want to backport from "git log" output)
-   $> git checkout stable/arno 
-   $> git cherry-pick -x $master_commit_d 
+   $> git checkout stable/arno
+   $> git cherry-pick -x $master_commit_d
    $> git review stable/arno
 
 Note: cherry-pick -x option includes 'cherry-picked from …' line in the commit message which is required to avoid Gerrit bug
@@ -116,8 +117,8 @@ Hint: Change-Id line must be in the last paragraph. Conflicts in the backport: a
 Email Notifications
 ~~~~~~~~~~~~~~~~~~~
 
-If you want to be notified of these patches you can create a watch on this screen: 
-https://gerrit.opnfv.org/gerrit/#/settings/projects 
+If you want to be notified of these patches you can create a watch on this screen:
+https://gerrit.opnfv.org/gerrit/#/settings/projects
 click "Watched Projects"
 
 Project Name: All-Projects
@@ -157,7 +158,7 @@ Team organization
 Project specific tasks
 ~~~~~~~~~~~~~~~~~~~~~~
 
-Each of the 5 projects that contributed to Arno will dedicate some committers which would be in charge of reviewing backports for their project, following the stable branch policy.
+Each of the 5 projects that contributed to Arno will dedicate some committers which would be in charge of reviewing backports for their project, following the stable branch policy. It is in the responsibility of each project how to select those committers (e.g. vote in the team).
 
 The group of these committers here are sometimes called the "stable branch maintenance team" or "stable-mtc" without this being necessarily a team with own organization.
 
