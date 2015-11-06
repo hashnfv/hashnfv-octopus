@@ -13,10 +13,9 @@ Repository: octopus
 Committers:
 dradez@redhat.com
 jiang.zhifeng@zte.com.cn
-pals@cisco.com
 stefan.k.berg@ericsson.com
 cm-r@hp.com
-sudha.kumari@hp.com
+sudhak@hpe.com
 ulrich.kleber@huawei.com
 fatih.degirmenci@ericsson.com
 Iben.Rodriguez@spirent.com
@@ -33,3 +32,6 @@ http://ircbot.wl.linuxfoundation.org/meetings/opnfv-meeting/2015/opnfv-meeting.2
 
 Huqiqi, Zhangyu and Weshayutin stepped down as committers
 
+pals@cisco.com removed from committer list by TSC decisions, see 
+https://wiki.opnfv.org/wiki/tsc#october_20_2015
+Email address for sudhak@hpe.com updated
