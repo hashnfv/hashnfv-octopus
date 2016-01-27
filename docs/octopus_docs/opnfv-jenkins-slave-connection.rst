@@ -13,10 +13,11 @@ and labs provided by the OPNFV Community to OPNFV Jenkins.
 
 License
 =======
-Connecting OPNFV Community Labs to OPNFV Jenkins (c) by Fatih Degirmenci (Ericsson AB)
+Connecting OPNFV Community Labs to OPNFV Jenkins (c) by Fatih Degirmenci (Ericsson AB) and others.
 
 Connecting OPNFV Labs to OPNFV Jenkins document is licensed under a Creative Commons
 Attribution 4.0 International License.
+
 You should have received a copy of the license along with this. If not, see <http://creativecommons.org/licenses/by/4.0/>.
 
 
@@ -24,7 +25,7 @@ Version History
 ===============
 
 +--------------------+--------------------+--------------------+----------------------+
-| **Date**           | **Ver.**           | **Author**         | **Comment**          |
+| **Date**           | **Version**        | **Author**         | **Comment**          |
 |                    |                    |                    |                      |
 +--------------------+--------------------+--------------------+----------------------+
 | 2015-05-05         | 0.1.0              | Fatih Degirmenci   | First draft          |
@@ -32,6 +33,12 @@ Version History
 +--------------------+--------------------+--------------------+----------------------+
 | 2015-09-25         | 1.0.0              | Fatih Degirmenci   | Instructions for the |
 |                    |                    |                    | Arno SR1 release     |
++--------------------+--------------------+--------------------+----------------------+
+| 2016-01-25         | 1.1.0              | Jun Li             | Change the format for|
+|                    |                    |                    | new doc toolchain    |
++--------------------+--------------------+--------------------+----------------------+
+| 2016-01-27         | 1.2.0              | Fatih Degirmenci   | Instructions for the |
+|                    |                    |                    | Brahmaputra release  |
 +--------------------+--------------------+--------------------+----------------------+
 
 Jenkins
@@ -47,9 +54,11 @@ Jenkins Slaves
 **Slaves** are computers that are set up to build projects for a **Jenkins Master**.  [2]
 
 Jenkins runs a separate program called "**slave agent**" on slaves.
-When slaves are registered to a master, the master starts distributing loads to slaves.  [2]
+When slaves are registered to a master, the master starts distributing load to slaves by
+scheduling jobs to run on slaves if the jobs are set to run on them.  [2]
 
-Term **Node** is used to refer to all machines that are part of Jenkins grid, slaves and master. [2]
+Term **Node** is used to refer to all machines that are part of Jenkins grid, slaves and
+master. [2]
 
 Two types of slaves are currently connected to OPNFV Jenkins and handling
 different tasks depending on the purpose of connecting the slave.
@@ -57,21 +66,25 @@ different tasks depending on the purpose of connecting the slave.
 * Slaves hosted in `LF Lab <https://wiki.opnfv.org/get_started/lflab_hosting#hardware_setup>`_
 * Slaves hosted in `Community Test Labs <https://wiki.opnfv.org/pharos#community_test_labs>`_
 
-The slaves connected to OPNFV Jenkins can be seen using this link: https://build.opnfv.org/ci/computer/
+The slaves connected to OPNFV Jenkins can be seen using this link:
+https://build.opnfv.org/ci/computer/
+
 Slaves without red cross next to computer icon are fully functional.
 
 Connecting Slaves to OPNFV Jenkins
 ==================================
 
-The method that is normally used for connecting slaves to Jenkins requires direct SSH access to servers.
+The method that is normally used for connecting slaves to Jenkins requires direct SSH access to
+servers.
 [3] This is the method that is used for connecting slaves hosted in LF Lab.
 
 Connecting slaves using direct SSH access can become a challenge given that OPNFV Project
 has number of different labs provided by community as mentioned in previous section.
 All these labs have different security requirements which can increase the effort
 and the time needed for connecting slaves to Jenkins.
-In order to reduce the effort and the time needed for connecting slaves and streamline the process,
-it has been decided to connect slaves using `Java Network Launch Protocol (JNLP) <https://docs.oracle.com/javase/tutorial/deployment/deploymentInDepth/jnlp.html>`_.
+In order to reduce the effort and the time needed for connecting slaves and streamline the
+process, it has been decided to connect slaves using
+`Java Network Launch Protocol (JNLP) <https://docs.oracle.com/javase/tutorial/deployment/deploymentInDepth/jnlp.html>`_.
 
 Connecting Slaves from LF Lab to OPNFV Jenkins
 ----------------------------------------------
@@ -89,44 +102,56 @@ Servers connecting to OPNFV Jenkins using this method must have access to intern
 
 Please follow below steps to connect a slave to OPNFV Jenkins.
 
-1. Create a ticket by sending mail to OPNFV LF Helpdesk first, opnfv-helpdesk@rt.linuxfoundation.org.
-2. Ensure DNS is setup for your public IP addresses: DNS A records and PTR records need to be matching.
-3. Create a local user on server you want to connect to OPNFV Jenkins. (named **jenkins** for example)
-4. Download slave.jar using https://build.opnfv.org/ci/jnlpJars/slave.jar and place it
-to somewhere so jenkins user created in previous step can access.
-5. Create a directory /home/jenkins/opnfv_slave_root.
-6. Contact LF by sending mail to opnfv-helpdesk@rt.linuxfoundation.org as
-getting the server connected requires help from LF.
-7. Provide needed information to LF including the IP of the server, name of the slave, slave root,
-and your Public PGP key in order for LF to pass credentials to you securely.
-Please see the notes section for details regarding how to pass your Public PGP Key.
-    Slave IP: x.x.x.x
+  1. Create a user named **jenkins** on the machine you want to connect to OPNFV Jenkins and give the user sudo rights.
+  2. Install needed software on the machine you want to connect to OPNFV Jenkins as slave.
+    - openjdk 7
+    - monit
+  3. If the slave will be used for running virtual deployments, Functest, and Yardstick, install below software and make jenkins user the member of the groups.
+    - docker
+    - libvirt
+  4. Create slave root in Jenkins user home directory.
+    ``mkdir -p /home/jenkins/opnfv/slave_root``
+  5. Clone OPNFV Releng Git repository.
+    ``mkdir -p /home/jenkins/opnfv/repos``
 
-    Slave name: company-build
+    ``cd /home/jenkins/opnfv/repos``
 
-    Slave Root: /home/jenkins/opnfv_slave_root
+    ``git clone https://gerrit.opnfv.org/gerrit/p/releng.git``
+  6. Contact LF by sending mail to `OPNFV LF Helpdesk <opnfv-helpdesk@rt.linuxfoundation.org>`_ and request creation of a slave on OPNFV Jenkins. Include below information in your mail.
+    - Slave root (/home/jenkins/opnfv/slave_root)
+    - Public IP of the slave (You can get the IP by executing ``curl http://icanhazip.com/``)
+    - PGP Key (attached to the mail or exported to a key server)
+  7. Once you get confirmation from LF stating that your slave is created on OPNFV Jenkins, check if the firewall on LF is open for the server you are trying to connect to Jenkins.
+    ``sudo /home/jenkins/opnfv/repos/releng/utils/jenkins-jnlp-connect.sh -j /home/jenkins -u jenkins -n  <slave name on OPNFV Jenkins> -s <the token you received from LF> -f``
 
-    PGP Key: (attached, or exported to key server)
-8. LF will provide you the key/token you need to use.
-9. Try to see if you can establish connection towards OPNFV Jenkins by using below command.
+     - If you receive an error, follow the steps listed on the command output.
+  8. Run the same script in order to get monit script created. You should see **INFO: Connected** in the console log.
+    ``sudo /home/jenkins/opnfv/repos/releng/utils/jenkins-jnlp-connect.sh -j /home/jenkins -u jenkins -n <slave name on OPNFV Jenkins> -s <the token you received from LF> -t``
 
-``java -jar slave.jar -jnlpUrl https://build.opnfv.org/ci/computer/<slave_name>/slave-agent.jnlp -secret <token>``
+     - If you receive an error similar to the one shown `on this link <http://hastebin.com/ozadagirax.avrasm>`_, you need to check your firewall and allow outgoing connections for the port.
+  9. Kill the Java slave.jar process.
+  10. Edit monit configuration and enable http interface. The file to edit is /etc/monit/monitrc on Ubuntu systems. Uncomment below lines.
+    set httpd port 2812 and
+        use address localhost  # only accept connection from localhost
+        allow localhost        # allow localhost to connect to the server and
+  11 Restart monit service.
+    - Without systemd:
 
-10. Navigate to OPNFV Jenkins and look for your slave.
-It should have some executors in “Idle” state if the connection is successful.
-11. Once you reach this step, you have the server connection to OPNFV Jenkins completed.
-You can script the command you used above so the connection between slave and Jenkins can be kept open.
+      ``sudo service monit restart``
+    - With systemd: you have to enable monit service first and then restart it.
+
+      ``sudo systemctl enable monit``
+
+      ``sudo systemctl restart monit``
+  12 Check to see if jenkins comes up as managed service in monit.
+    ``sudo monit status``
+  13 Connect slave to OPNFV Jenkins using monit.
+    ``sudo monit start jenkins``
+  14 Check slave on OPNFV Jenkins to verify the slave is reported as connected.
+    - The slave on OPNFV Jenkins should have some executors in “Idle” state if the connection is successful.
 
 Notes
 ==========
-
-Keeping the slave.jar Up to Date
---------------------------------
-
-It is important to keep the slave.jar up to date since OPNFV Jenkins version may be updated any time.
-In order to make sure you are using compatible version of slave.jar,
-you can download it from https://build.opnfv.org/ci/jnlpJars/slave.jar whenever you reopen the connection towards OPNFV Jenkins.
-You may experience random disconnects if you do not do this regularly.
 
 PGP Key Instructions
 --------------------
@@ -136,7 +161,8 @@ there using your mail address. Example command to upload the key to key server i
 
     ``gpg --keyserver hkp://keys.gnupg.net:80  --send-keys XXXXXXX``
 
-The Public PGP Key can also be attached to the email by storing the key in a file and then attaching it to the email.
+The Public PGP Key can also be attached to the email by storing the key in a file and then
+attaching it to the email.
 
     ``gpg --export -a '<your email address>' > pgp.pubkey``
 
