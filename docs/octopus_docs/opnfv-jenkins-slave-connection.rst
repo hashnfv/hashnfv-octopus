@@ -24,22 +24,25 @@ You should have received a copy of the license along with this. If not, see <htt
 Version History
 ===============
 
-+--------------------+--------------------+--------------------+----------------------+
-| **Date**           | **Version**        | **Author**         | **Comment**          |
-|                    |                    |                    |                      |
-+--------------------+--------------------+--------------------+----------------------+
-| 2015-05-05         | 0.1.0              | Fatih Degirmenci   | First draft          |
-|                    |                    |                    |                      |
-+--------------------+--------------------+--------------------+----------------------+
-| 2015-09-25         | 1.0.0              | Fatih Degirmenci   | Instructions for the |
-|                    |                    |                    | Arno SR1 release     |
-+--------------------+--------------------+--------------------+----------------------+
-| 2016-01-25         | 1.1.0              | Jun Li             | Change the format for|
-|                    |                    |                    | new doc toolchain    |
-+--------------------+--------------------+--------------------+----------------------+
-| 2016-01-27         | 1.2.0              | Fatih Degirmenci   | Instructions for the |
-|                    |                    |                    | Brahmaputra release  |
-+--------------------+--------------------+--------------------+----------------------+
++------------+-------------+------------------+---------------------------------------+
+| **Date**   | **Version** | **Author**       | **Comment**                           |
+|            |             |                  |                                       |
++------------+-------------+------------------+---------------------------------------+
+| 2015-05-05 | 0.1.0       | Fatih Degirmenci | First draft                           |
+|            |             |                  |                                       |
++------------+-------------+------------------+---------------------------------------+
+| 2015-09-25 | 1.0.0       | Fatih Degirmenci | Instructions for the                  |
+|            |             |                  | Arno SR1 release                      |
++------------+-------------+------------------+---------------------------------------+
+| 2016-01-25 | 1.1.0       | Jun Li           | Change the format for                 |
+|            |             |                  | new doc toolchain                     |
++------------+-------------+------------------+---------------------------------------+
+| 2016-01-27 | 1.2.0       | Fatih Degirmenci | Instructions for the                  |
+|            |             |                  | Brahmaputra release                   |
++------------+-------------+------------------+---------------------------------------+
+| 2016-05-25 | 1.3.0       | Julien           | Add an additional step after step9 to |
+|            |             |                  | output the correct monit config file  |
++------------+-------------+------------------+---------------------------------------+
 
 Jenkins
 =======
@@ -125,16 +128,18 @@ Please follow below steps to connect a slave to OPNFV Jenkins.
     ``sudo /home/jenkins/opnfv/repos/releng/utils/jenkins-jnlp-connect.sh -j /home/jenkins -u jenkins -n  <slave name on OPNFV Jenkins> -s <the token you received from LF> -f``
 
      - If you receive an error, follow the steps listed on the command output.
-  8. Run the same script in order to get monit script created. You should see **INFO: Connected** in the console log.
+  8. Run the same script with test(-t) on foreground in order to make sure no problem on connection. You should see **INFO: Connected** in the console log.
     ``sudo /home/jenkins/opnfv/repos/releng/utils/jenkins-jnlp-connect.sh -j /home/jenkins -u jenkins -n <slave name on OPNFV Jenkins> -s <the token you received from LF> -t``
 
      - If you receive an error similar to the one shown `on this link <http://hastebin.com/ozadagirax.avrasm>`_, you need to check your firewall and allow outgoing connections for the port.
   9. Kill the Java slave.jar process.
-  10. Edit monit configuration and enable http interface. The file to edit is /etc/monit/monitrc on Ubuntu systems. Uncomment below lines.
+  10. Run the same script normally without test(-t) in order to get monit script created.
+    ``sudo /home/jenkins/opnfv/repos/releng/utils/jenkins-jnlp-connect.sh -j /home/jenkins -u jenkins -n <slave name on OPNFV Jenkins> -s <the token you received from LF>``
+  11. Edit monit configuration and enable http interface. The file to edit is /etc/monit/monitrc on Ubuntu systems. Uncomment below lines.
     set httpd port 2812 and
         use address localhost  # only accept connection from localhost
         allow localhost        # allow localhost to connect to the server and
-  11 Restart monit service.
+  12. Restart monit service.
     - Without systemd:
 
       ``sudo service monit restart``
@@ -143,11 +148,11 @@ Please follow below steps to connect a slave to OPNFV Jenkins.
       ``sudo systemctl enable monit``
 
       ``sudo systemctl restart monit``
-  12 Check to see if jenkins comes up as managed service in monit.
+  13. Check to see if jenkins comes up as managed service in monit.
     ``sudo monit status``
-  13 Connect slave to OPNFV Jenkins using monit.
+  14. Connect slave to OPNFV Jenkins using monit.
     ``sudo monit start jenkins``
-  14 Check slave on OPNFV Jenkins to verify the slave is reported as connected.
+  15. Check slave on OPNFV Jenkins to verify the slave is reported as connected.
     - The slave on OPNFV Jenkins should have some executors in “Idle” state if the connection is successful.
 
 Notes
