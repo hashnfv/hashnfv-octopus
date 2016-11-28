@@ -125,16 +125,18 @@ Please follow below steps to connect a slave to OPNFV Jenkins.
     - Public IP of the slave (You can get the IP by executing ``curl http://icanhazip.com/``)
     - PGP Key (attached to the mail or exported to a key server)
   7. Once you get confirmation from LF stating that your slave is created on OPNFV Jenkins, check if the firewall on LF is open for the server you are trying to connect to Jenkins.
-    ``sudo /home/jenkins/opnfv/repos/releng/utils/jenkins-jnlp-connect.sh -j /home/jenkins -u jenkins -n  <slave name on OPNFV Jenkins> -s <the token you received from LF> -f``
+    ``cp /home/jenkins/opnfv/repos/releng/utils/jenkins-jnlp-connect.sh /home/jenkins/``
+    ``cd /home/jenkins/``
+    ``sudo ./jenkins-jnlp-connect.sh -j /home/jenkins -u jenkins -n  <slave name on OPNFV Jenkins> -s <the token you received from LF> -f``
 
      - If you receive an error, follow the steps listed on the command output.
   8. Run the same script with test(-t) on foreground in order to make sure no problem on connection. You should see **INFO: Connected** in the console log.
-    ``sudo /home/jenkins/opnfv/repos/releng/utils/jenkins-jnlp-connect.sh -j /home/jenkins -u jenkins -n <slave name on OPNFV Jenkins> -s <the token you received from LF> -t``
+    ``sudo ./jenkins-jnlp-connect.sh -j /home/jenkins -u jenkins -n <slave name on OPNFV Jenkins> -s <the token you received from LF> -t``
 
      - If you receive an error similar to the one shown `on this link <http://hastebin.com/ozadagirax.avrasm>`_, you need to check your firewall and allow outgoing connections for the port.
   9. Kill the Java slave.jar process.
   10. Run the same script normally without test(-t) in order to get monit script created.
-    ``sudo /home/jenkins/opnfv/repos/releng/utils/jenkins-jnlp-connect.sh -j /home/jenkins -u jenkins -n <slave name on OPNFV Jenkins> -s <the token you received from LF>``
+    ``sudo ./jenkins-jnlp-connect.sh -j /home/jenkins -u jenkins -n <slave name on OPNFV Jenkins> -s <the token you received from LF>``
   11. Edit monit configuration and enable http interface. The file to edit is /etc/monit/monitrc on Ubuntu systems. Uncomment below lines.
     set httpd port 2812 and
         use address localhost  # only accept connection from localhost
