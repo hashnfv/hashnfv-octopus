@@ -21,4 +21,4 @@ Contents:
    mano-scenarios.rst
    current-status.rst
    scenario-descriptor-files.rst
-
+   workflows.rst
