@@ -6,7 +6,8 @@
 Current Status
 ---------------
 
-tdb: this chapter will summarize the scenario analysis.
+This chapter summarizes the scenario analysis to provide some background.
+It also defines the way to introduce the scenario processes.
 
 Arno
 ^^^^^^^^
@@ -18,31 +19,55 @@ that could be deployed in two ways, by the two installers available in Arno.
 Brahmaputra
 ^^^^^^^^^^^^^^^^
 
-tbd
+In Brahmaputra, we added options for SDN (ONOS, OCL) and some optional
+features (sfc, sdnvpn, kvm, l3 enabled ODL).
+Thus we had 9 scenarios, some of them to be deployed with 2 installers,
+that planned to participate in the release. Not all of them succeeded.
 
 Colorado
 ^^^^^^^^^^^^
 
-tbd
+In Colorado more components and features were added to a total of 17
+combinations of components and features. Some were supported by one
+of the four installers, others by multiple installers. In addition HA
+and NOHA options were defined.
+This lead to 28 combinations that planned to participate.
 
 Danube
 ^^^^^^^^^^
 
-tbd: Analysis of the 58 scenarios
-The analysis can be found in the slides at
-https://wiki.opnfv.org/display/INF/Scenario+Consolidation
-and will be explain with some text here.
-The text will also use the diagrams from the slides, e.g.
-show a scenario tree:
+In Danube the number of combinations of components and features increased
+to 24, but since installer support increased and more scenarios planned
+to provide HA and NOHA options, the number of combinations was 54.
 
-.. figure:: scenario-tree.png
+In addition to that some scenarios were defined later in during development
+and some scenarios worked on ARM support.
 
-and an idea about possible generic scenarios:
+This created the need to better understand relationships and
+incompatibilities of the scenarios to drive for a manageable process
+for scenarios.
 
-.. figure:: scenario-tree+idea.png
+As a result the relationship between the scenarios can be
+visualized by a scenario tree.
 
-as well as possible ways to reach this.
+.. figure:: scenario-tree-danube.png
 
+The process for generic and specific scenarios is not in place for the
+Danube release yet. But the different branches of the scenario tree
+provide the candidates to define generic scenario during the timeframe
+of the next release.
+
+Euphrates
+^^^^^^^^^^
+
+tbd: statistics on Euphrates Scenarios
+
+During Euphrates timeframe, dynamic POD allocation is introduced in CI.
+This is a prerequisite to make use of the SDF in the CI pipeline.
+Therefore in this timeframe, scenario processes are introduced only in
+a documentation way and as support for release management.
+
+Also the definition of generic scenarios can be done.
 
 
 
