@@ -1,9 +1,6 @@
 Project: Continuous Integration (Octopus)
 Project Creation Date: December 9, 2014
-Project Category: Integration&Testing
-Lifecycle State: Incubation
-Primary Contact: ulrich.kleber@huawei.com
-Project Lead: ulrich.kleber@huawei.com (temporary)
+Project Lead: ulrich.kleber@huawei.com
 Jira Project Name: Continuous Integration Project
 Jira Project Prefix: OCTO
 Mailing list tag [octopus]
@@ -13,13 +10,10 @@ Repository: octopus
 Committers:
 dradez@redhat.com
 jiang.zhifeng@zte.com.cn
-stefan.k.berg@ericsson.com
-cm-r@hp.com
-sudhak@hpe.com
+cm-r@hpe.com
 ulrich.kleber@huawei.com
 fatih.degirmenci@ericsson.com
-Iben.Rodriguez@spirent.com
-xyzjerry@gmail.com:
+Iben.Rodriguez@gmail.com
 
 Link to TSC approval of the project: http://meetbot.opnfv.org/meetings/opnfv-meeting/
 Link(s) to approval of additional submitters:
@@ -35,3 +29,7 @@ Huqiqi, Zhangyu and Weshayutin stepped down as committers
 pals@cisco.com removed from committer list by TSC decisions, see 
 https://wiki.opnfv.org/wiki/tsc#october_20_2015
 Email address for sudhak@hpe.com updated
+
+Email address for cm-r@hpe.com and iben.rodriguez@gmail.com updated
+sudha and jerry removed after not responding for one year.
+Stefan stepped down https://lists.opnfv.org/pipermail/opnfv-tech-discuss/2017-May/016465.html
