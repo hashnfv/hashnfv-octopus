@@ -6,40 +6,47 @@
 Creating Scenarios
 --------------------
 
-Purpose
-^^^^^^^^^^^
+General
+^^^^^^^^^
 
 A new scenario needs to be created, when a new combination of upstream
 components or features shall be supported, that cannot be provided with the
 existing scenarios in parallel to their existing features.
 
 Typically new scenarios are created as children of existing scenarios.
+They start as specific scenario and as they mature, they either merge back
+their features to the parent or promote to a generic scenario.
 
-* In some cases an upstream implementation can be replaced by a different solution.
-  The most obvious example here is the SDN controller. In the first OPNFV release,
-  only ODL was supported. Later ONOS and OpenContrail were added, thus creating
-  new scenarios.
+Scenario Owners
+^^^^^^^^^^^^^^^^
 
-  In most cases, only one of the SDN controllers is needed, thus OPNFV will support
-  the different SDN controllers by different scenarios. This support will be long-
-  term, so there will be multiple generic scenarios for these options.
+Each scenario must have an "owner". Scenario owners have the following responsibilities:
 
-* Another usecase is feature incompatibilities. For instance, OVS and FD.io
-  cannot be combined today. Therefore we need different scenarios for them.
-  If it is expected that such an incompatibility is not solved for longer time,
-  there can be even separate generic scenarios for these options.
+* The scenario owner is responsible for the contents and usage of the scenario.
+* He shall define the contents for the scenario deployment:
 
-The overlap between scenarios should only be allowed where they add components
-that cannot be integrated in a single deployment.
+  * The components and their versions that need to be deployed
+  * Options for the deployment of such components, e.g. settings, optional features, ..
+  * Which installers to use
+  * Deployment options (HA, NOHA, hardware types, ..)
 
-If scenario A completely covers scenario B, support of scenario B will be
-only provided as long as isolation of development risks is necessary.
-However, there might be cases where somebody wants to use scenario B
-still as a parent for specific scenarios.
+* He shall define the usage of the scenario in the development process:
 
-This is especially the case for generic scenarios, since they need more CI and testing
-resources. Therefore a gating process will be introduced for generic scenarios.
+  * Initiate integration to CI
+  * Define which testcases to run
+  * Applies that the scenario joins a release
 
+* The owner maintains the Scenario Descriptor File (SDF)
+* Drives for the scenario be supported by more installers
+
+The scenario owner of a specific scenario typically comes from the feature project
+that develops the features introduced by the scenario.
+
+The scenario owner of a generic scenario will need to drive more integration tasks than
+feature development. Thus he typically will come from a project with a broader scope
+than a single feature, e.g. a testing project.
+The scenario owner of a generic scenario needs to cover issues of all installers, so
+only in exceptional cases he will come from an installer project.
 
 Creating Generic Scenarios
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -80,16 +87,17 @@ support might be low priority during a final release preparation, e.g. after a M
   a release, when he expects the scenario merge to other scenarios, and he expects
   the features may be made available in generic scenarios.
   A scenario can join a release at the MS0 after its creation.
-  It should join a release latest on the next MS0 6 month after its
-  creation (that is it should skip only one release) and merge to its parent
-  maximum 2 releases later.
-  .. Editors note: "2 releases" is rather strict maybe refine?
 * The PTL should explain the infrastructure requirements and clarify that sufficient
   resources are available for the scenario.
 * The PTL shall assign a scenario owner.
 * The scenario owner shall maintain the scenario descriptor file according to the
   template.
-* The scenario owner shall initiate the scenario be integrated in CI or releases.
+* The scenario owner shall drive the necessary discussions with installers and testing
+  teams to get their support.
+* In case the scenario needs new keywords in the SDF, the scenario owner shall discuss
+  those with the installer teams and CI.
+* The scenario owner shall initiate the scenario be integrated in CI and 
+  participate in releases.
 * When the scenario joins a release this needs to be done in time for the relevant
   milestones.
 
