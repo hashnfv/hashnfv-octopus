@@ -10,23 +10,21 @@ Repository: octopus
 Committers:
 dradez@redhat.com
 jiang.zhifeng@zte.com.cn
-cm-r@hpe.com
 ulrich.kleber@huawei.com
 fatih.degirmenci@ericsson.com
-Iben.Rodriguez@gmail.com
 
 Link to TSC approval of the project: http://meetbot.opnfv.org/meetings/opnfv-meeting/
 Link(s) to approval of additional submitters:
 
-ulrich.kleber@huawei.com: 
+ulrich.kleber@huawei.com:
 https://wiki.opnfv.org/wiki/tsc#tsc_meeting_february_10_2015 + email vote
 
 fatih.degirmenci@ericsson.com, Iben.Rodriguez@spirent.com, zhaoxinyu@huawei.com:
-http://ircbot.wl.linuxfoundation.org/meetings/opnfv-meeting/2015/opnfv-meeting.2015-03-30-14.00.html 
+http://ircbot.wl.linuxfoundation.org/meetings/opnfv-meeting/2015/opnfv-meeting.2015-03-30-14.00.html
 
 Huqiqi, Zhangyu and Weshayutin stepped down as committers
 
-pals@cisco.com removed from committer list by TSC decisions, see 
+pals@cisco.com removed from committer list by TSC decisions, see
 https://wiki.opnfv.org/wiki/tsc#october_20_2015
 Email address for sudhak@hpe.com updated
 
