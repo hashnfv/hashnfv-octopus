@@ -1,3 +1,4 @@
+---
 ##############################################################################
 # Copyright (c) 2017 Huawei others.
 # ulrich.kleber@huawei.com
@@ -21,7 +22,7 @@ scenario-metadata:
   title: fdio odl basic for devops
   generic-scenario: false
   version: 1.0.0
-  creation-date:  2017-03-16
+  creation-date: 2017-03-16
   # This scenario introduces fd.io with odl and a basic feature set.
   # It is derived from parent odl_l2 nofeature. In a next step, odl_l2 and
   # old_l3 functionality shall be merged and provide sfc as well as other
@@ -48,7 +49,7 @@ components:
         - vpp
   - storage:
       component-type: ceph
-      #$$$$ Should we add num-replicas 3 here?
+      # $$$$ Should we add num-replicas 3 here?
 
   - cloud-controller:
       type: openstack
@@ -103,7 +104,7 @@ deployment-options:
         nodes:
           - name: host1
             roles:
-              - openstack-controller # need to add fd.io?
+              - openstack-controller  # need to add fd.io?
               - odl
           - name: host2
             roles:
@@ -120,11 +121,11 @@ deployment-options:
             roles:
               - openstack-compute
   deployment-tools:
-    - apex:
-         cpu: intel
-         pod: baremetal
-         availability: ha
     # fuel support shall be added soon
+    - apex:
+        cpu: intel
+        pod: baremetal
+        availability: ha
 ##############################################################################
 
 ##############################################################################
