@@ -19,6 +19,7 @@
 # can be deployed even using a different installer tool.
 #
 # More details can be found in the scenario lifecycle document.
+# http://artifacts.opnfv.org/octopus/docs/scenario-lifecycle/index.html
 ##############################################################################
 
 ##############################################################################
@@ -91,7 +92,7 @@ deployment-options:
           # opnfv-infrastructure scenario.
     - compute-node:     # no additional component to be deployed here
 
-  role-disctribution:
+  role-distribution:
     - ha:
         controller-node: 3
         compute-node: 2
